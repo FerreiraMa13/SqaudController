@@ -442,7 +442,7 @@ BoxCollider:
   m_GameObject: {fileID: 1698470754}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -527,6 +527,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1ed4951bf10d504a86e822e9b55ae5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 10
+  scroll_speed: 0.5
+  max_zoom: 8
+  min_zoom: 16
+  inverted: 1
 --- !u!143 &2078898622
 CharacterController:
   m_ObjectHideFlags: 0
@@ -539,7 +544,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 2
-  m_Radius: 0.5
+  m_Radius: 1
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -574,7 +579,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 4c09433d4f539fb4aa0abbc567de544f, type: 3}
+  m_Actions: {fileID: -944628639613478452, guid: e6a4662786fc0f84ab235530bdc2db04, type: 3}
   m_NotificationBehavior: 0
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
