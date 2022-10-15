@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player_Controller : MonoBehaviour
 {
 
     CharacterController controller;
     Player_Controller_Actions controls;
+    SquadBrain squad;
     Camera main_camera;
     Vector3 coordenates = Vector3.zero;
     Vector2 movement_inputs = Vector2.zero;
@@ -14,7 +16,8 @@ public class Player_Controller : MonoBehaviour
     Vector2 mouse_pos = Vector2.zero;
     Vector2 clicked_pos = Vector2.zero;
     bool clicked = false;
-    MinionController minion;
+    /*MinionController minion;*/
+    List<MinionController> controlled_minions = new List<MinionController>();
 
     public float speed = 1f;
     public float scroll_speed = 1f;
@@ -30,9 +33,10 @@ public class Player_Controller : MonoBehaviour
     {
         main_camera = GetComponentInChildren<Camera>();
         controller = GetComponent<CharacterController>();
+        squad = GameObject.FindGameObjectWithTag("Squad").GetComponent<SquadBrain>();
         controls = new Player_Controller_Actions();
-        controls.Player.Click.performed += ctx => GetClickCoordenates();
-        controls.Player.MousePosition.performed += ctx => mouse_pos = ctx.ReadValue<Vector2>();
+        controls.Player.Click.performed += ctx => GetClickCoordenates(ctx);
+        /*controls.Player.MousePosition.performed += ctx => mouse_pos = ctx.ReadValue<Vector2>();*/
         controls.Player.Move.performed += ctx => movement_inputs = ctx.ReadValue<Vector2>();
         controls.Player.Move.canceled += ctx => movement_inputs = Vector2.zero;
         if(!manual_zoom)
@@ -55,47 +59,48 @@ public class Player_Controller : MonoBehaviour
     }
     private void Update()
     {
-        if(clicked)
-        {
-            HandleCommands();
-        }
     }
-    private void GetClickCoordenates()
+    private void GetClickCoordenates(InputAction.CallbackContext ctx)
     {
-        if(!clicked)
+        RaycastHit hit;
+        Ray ray = main_camera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        if(Physics.Raycast(ray, out hit) && hit.collider)
         {
-            RaycastHit hit;
-            var ray = main_camera.ScreenPointToRay(mouse_pos);
-
-            if (Physics.Raycast(ray, out hit))
+            if (hit.transform.tag == "Minion")
             {
-                if (hit.transform.tag == "Minion")
+                var minion = hit.transform.gameObject.GetComponent<MinionController>();
+                if (!controlled_minions.Contains(minion))
                 {
-                    if (minion == null)
-                    {
-                        minion = hit.transform.gameObject.GetComponent<MinionController>();
-                        Debug.Log("Hit Minion");
-                    }
+                    /*squad.AddMinion(minion);*/
+                    controlled_minions.Add(minion);
+                    minion.goOnline();
+                    Debug.Log("Hit Minion");
                 }
                 else
                 {
-                    clicked = true;
-                    clicked_pos = hit.point;
-                    Debug.Log(main_camera.ScreenToWorldPoint(mouse_pos));
+                    /*squad.RemoveMinion(minion);*/
+                    controlled_minions.Remove(minion);
+                    minion.goOffline();
                 }
+            }
+            else
+            {
+                HandleCommands(hit.point);
             }
             
         }
     }
-
-    private void HandleCommands()
+    private void HandleCommands(Vector3 position)
     {
-        Debug.Log(main_camera.ScreenToWorldPoint(clicked_pos));
-        if(minion != null)
+        Debug.Log(position);
+        /*squad.OrderToMove(position);*/
+        if(controlled_minions.Count != 0)
         {
-            minion.OrderToMove(clicked_pos);
+            foreach(var minion in controlled_minions)
+            {
+                minion.OrderToMove(position);
+            }
         }
-        clicked = false;
     }
     private void HandleMovement()
     {
@@ -139,7 +144,6 @@ public class Player_Controller : MonoBehaviour
     {
         controls.Player.Disable();
     }
-
     /// <summary>
     /// a ----- A
     /// b ----- x
@@ -151,5 +155,16 @@ public class Player_Controller : MonoBehaviour
     private float Calc3rule(float b)
     {
         return (b * 100) / 240;
+    }
+    public bool isInList(MinionController search_target)
+    {
+        foreach(MinionController current in controlled_minions)
+        {
+            if(current == search_target)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
