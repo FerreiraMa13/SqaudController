@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7882060742529664322}
   - component: {fileID: 7882060742529664323}
   - component: {fileID: 7229211054796281764}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Minion
   m_TagString: Minion
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 7882060742690533086}
   - component: {fileID: 7882060742690533075}
   - component: {fileID: 7882060742690533072}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cap
   m_TagString: Minion
   m_Icon: {fileID: 0}

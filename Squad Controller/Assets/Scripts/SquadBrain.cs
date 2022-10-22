@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class SquadBrain : MonoBehaviour
 {
-    List<MinionController> tethered_minions = new List<MinionController>();
-    MinionController minion_brain;
+    protected List<MinionController> tethered_minions = new List<MinionController>();
+    protected MinionController minion_brain;
     private CharacterController controller;
     public float speed = 1f;
     public float error_margin = 0.5f;
     public MinionController.STATUS current_state = MinionController.STATUS.IDLE;
 
-    private Vector3 destination = Vector3.zero;
+   protected Vector3 destination = Vector3.zero;
 
     public float turn_smooth_time = 0.1f;
     private float turn_smooth_velocity;
     private Quaternion group_rotation;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         controller = GetComponent<CharacterController>();
         group_rotation = transform.rotation;
     }
-    public void OrderToMove(Vector3 new_destination)
+    public virtual void OrderToMove(Vector3 new_destination)
     {
         if(tethered_minions.Count >0)
         {
@@ -89,7 +89,7 @@ public class SquadBrain : MonoBehaviour
             distance_z *= 0.5f;
             mid_point.x = top_left.x + distance_x;
             mid_point.z = bot_right.z + distance_z;
-
+            mid_point.y -= 1;
             transform.position = mid_point;
 
             foreach( var child in children)
@@ -105,9 +105,8 @@ public class SquadBrain : MonoBehaviour
             current_state = HandleMovement();
         }
     }
-    private MinionController.STATUS HandleMovement()
+    protected virtual MinionController.STATUS HandleMovement()
     {
-
         Vector3 new_direction = destination - transform.position;
         Vector3 input_direction = new Vector3(new_direction.x, 0.0f, new_direction.y);
         Vector3 rotate = RotateCalc(new_direction, destination.y);

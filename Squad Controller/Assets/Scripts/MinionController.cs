@@ -10,29 +10,30 @@ public class MinionController : MonoBehaviour
         MOVING = 1,
         TETHERED = 2
     }
-    private SquadBrain squad;
+    protected SquadBrain squad;
     private CharacterController controller;
     public float speed = 1f;
     public float error_margin = 0.5f;
     public STATUS current_state = STATUS.IDLE;
 
-    private Vector3 destination = Vector3.zero;
+    protected Vector3 destination = Vector3.zero;
 
     public float turn_smooth_time = 0.1f;
-    private float turn_smooth_velocity;
+    protected float turn_smooth_velocity;
 
     public Material online_color;
     public Material offline_color;
-    private MeshRenderer mesh_rend;
-    private bool online = false;
+    protected MeshRenderer mesh_rend;
+    protected bool online = false;
 
-    private void Awake()
+    protected void Awake()
     {
         controller = GetComponent<CharacterController>();
         mesh_rend = GetComponent<MeshRenderer>();
         squad = GameObject.FindGameObjectWithTag("Squad").GetComponent<SquadBrain>();
+        AdditionalAwake();
     }
-    public void OrderToMove(Vector3 new_destination)
+    public virtual  void OrderToMove(Vector3 new_destination)
     {
         
         if (current_state == STATUS.TETHERED)
@@ -52,9 +53,8 @@ public class MinionController : MonoBehaviour
             current_state = HandleMovement();
         }
     }
-    private STATUS HandleMovement()
+    protected virtual STATUS HandleMovement()
     {
-
         Vector3 new_direction = destination - transform.position;
         Vector3 input_direction = new Vector3(new_direction.x, 0.0f, new_direction.y);
         Vector3 rotate = RotateCalc(new_direction, destination.y);
@@ -114,5 +114,9 @@ public class MinionController : MonoBehaviour
                 squad.AddMinion(this);
             }
         }
+    }
+    protected virtual void AdditionalAwake()
+    {
+
     }
 }
