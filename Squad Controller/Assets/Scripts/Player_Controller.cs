@@ -5,12 +5,18 @@ using UnityEngine.InputSystem;
 
 public class Player_Controller : MonoBehaviour
 {
+    public enum ORDERS
+    {
+        NONE = -1,
+        MOVE = 1,
+        SOLO = 2
+    }
 
     private CharacterController controller;
     private Player_Controller_Actions controls;
     private SquadBrain squad;
     private Camera main_camera;
-    private readonly List<MinionController> controlled_minions = new();
+    private readonly List<SmartMinionController> controlled_minions = new();
     private readonly List<Camera> cameras = new();
 
     private Vector2 movement_inputs = Vector2.zero;
@@ -23,6 +29,7 @@ public class Player_Controller : MonoBehaviour
     public float min_zoom = 16f;
     public bool inverted = true;
     public bool manual_zoom = false;
+    public bool extra_utility = false;
 
     void Awake()
     { 
@@ -35,6 +42,7 @@ public class Player_Controller : MonoBehaviour
         main_camera.gameObject.SetActive(true);
         controller = GetComponent<CharacterController>();
         squad = GameObject.FindGameObjectWithTag("Squad").GetComponent<SquadBrain>();
+
         SetUpControls();
     }
     private void FixedUpdate()
@@ -52,7 +60,7 @@ public class Player_Controller : MonoBehaviour
         {
             if (hit.transform.tag == "Minion")
             {
-                var minion = hit.transform.gameObject.GetComponent<MinionController>();
+                var minion = hit.transform.gameObject.GetComponent<SmartMinionController>();
                 if (!controlled_minions.Contains(minion))
                 {
                     /*squad.AddMinion(minion);*/
@@ -62,7 +70,6 @@ public class Player_Controller : MonoBehaviour
                 else
                 {
                     /*squad.RemoveMinion(minion);*/
-                    
                     if( minion.goOffline() )
                     {
                         controlled_minions.Remove(minion);
@@ -71,22 +78,45 @@ public class Player_Controller : MonoBehaviour
             }
             else
             {
-                HandleCommands(hit.point);
+                if(extra_utility)
+                {
+                    HandleCommands(hit.point, ORDERS.SOLO);
+                }
+                else
+                {
+                    HandleCommands(hit.point, ORDERS.MOVE);
+                }
             }
             
         }
     }
-    private void HandleCommands(Vector3 position)
+    private void HandleCommands(Vector3 position, ORDERS order)
     {
-        Debug.Log(position);
-        /*squad.OrderToMove(position);*/
-        if(controlled_minions.Count != 0)
+        switch (order)
         {
-            foreach(var minion in controlled_minions)
-            {
-                minion.OrderToMove(position);
-            }
+            case ORDERS.MOVE:
+                if (controlled_minions.Count != 0)
+                {
+                    foreach (var minion in controlled_minions)
+                    {
+                        minion.OrderToMove(position);
+                    }
+                }
+                break;
+            case ORDERS.SOLO:
+                if (controlled_minions.Count != 0)
+                {
+                    if(controlled_minions[0].goSolo())
+                    {
+                        controlled_minions[0].OrderToSolo(position);
+                        controlled_minions.RemoveAt(0);
+                    }
+                }
+                break;
+            default:
+                break;
         }
+        
     }
     private void HandleMovement()
     {
@@ -174,6 +204,8 @@ public class Player_Controller : MonoBehaviour
         controls.Player.Move.performed += ctx => movement_inputs = ctx.ReadValue<Vector2>();
         controls.Player.Move.canceled += ctx => movement_inputs = Vector2.zero;
         controls.Player.CycleCamera.performed += ctx => SwapCameras();
+        controls.Player.ExtraUtility.performed += ctx => extra_utility = true;
+        controls.Player.ExtraUtility.canceled += ctx => extra_utility = false;
         if (!manual_zoom)
         {
             controls.Player.Zoom.performed += ctx => zoom_inputs = ctx.ReadValue<Vector2>();

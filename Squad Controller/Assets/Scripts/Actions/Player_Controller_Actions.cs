@@ -89,6 +89,15 @@ public partial class @Player_Controller_Actions : IInputActionCollection2, IDisp
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Extra Utility"",
+                    ""type"": ""Button"",
+                    ""id"": ""46b9fb42-8bc7-4e94-baf5-05d922446db1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -287,6 +296,28 @@ public partial class @Player_Controller_Actions : IInputActionCollection2, IDisp
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Cycle Camera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ac1a080e-dba5-4f48-b5ff-105793e53d11"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Extra Utility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f65ac65c-bb60-4639-a674-15d1d28a4788"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Extra Utility"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -881,6 +912,7 @@ public partial class @Player_Controller_Actions : IInputActionCollection2, IDisp
         m_Player_ManualZoomMinus = m_Player.FindAction("Manual Zoom Minus", throwIfNotFound: true);
         m_Player_Click = m_Player.FindAction("Click", throwIfNotFound: true);
         m_Player_CycleCamera = m_Player.FindAction("Cycle Camera", throwIfNotFound: true);
+        m_Player_ExtraUtility = m_Player.FindAction("Extra Utility", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -959,6 +991,7 @@ public partial class @Player_Controller_Actions : IInputActionCollection2, IDisp
     private readonly InputAction m_Player_ManualZoomMinus;
     private readonly InputAction m_Player_Click;
     private readonly InputAction m_Player_CycleCamera;
+    private readonly InputAction m_Player_ExtraUtility;
     public struct PlayerActions
     {
         private @Player_Controller_Actions m_Wrapper;
@@ -970,6 +1003,7 @@ public partial class @Player_Controller_Actions : IInputActionCollection2, IDisp
         public InputAction @ManualZoomMinus => m_Wrapper.m_Player_ManualZoomMinus;
         public InputAction @Click => m_Wrapper.m_Player_Click;
         public InputAction @CycleCamera => m_Wrapper.m_Player_CycleCamera;
+        public InputAction @ExtraUtility => m_Wrapper.m_Player_ExtraUtility;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1000,6 +1034,9 @@ public partial class @Player_Controller_Actions : IInputActionCollection2, IDisp
                 @CycleCamera.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCycleCamera;
                 @CycleCamera.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCycleCamera;
                 @CycleCamera.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCycleCamera;
+                @ExtraUtility.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExtraUtility;
+                @ExtraUtility.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExtraUtility;
+                @ExtraUtility.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExtraUtility;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1025,6 +1062,9 @@ public partial class @Player_Controller_Actions : IInputActionCollection2, IDisp
                 @CycleCamera.started += instance.OnCycleCamera;
                 @CycleCamera.performed += instance.OnCycleCamera;
                 @CycleCamera.canceled += instance.OnCycleCamera;
+                @ExtraUtility.started += instance.OnExtraUtility;
+                @ExtraUtility.performed += instance.OnExtraUtility;
+                @ExtraUtility.canceled += instance.OnExtraUtility;
             }
         }
     }
@@ -1188,6 +1228,7 @@ public partial class @Player_Controller_Actions : IInputActionCollection2, IDisp
         void OnManualZoomMinus(InputAction.CallbackContext context);
         void OnClick(InputAction.CallbackContext context);
         void OnCycleCamera(InputAction.CallbackContext context);
+        void OnExtraUtility(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

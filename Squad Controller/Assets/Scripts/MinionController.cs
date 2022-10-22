@@ -8,7 +8,8 @@ public class MinionController : MonoBehaviour
     {
         IDLE = 0,
         MOVING = 1,
-        TETHERED = 2
+        TETHERED = 2,
+        SOLO = 3
     }
     protected SquadBrain squad;
     private CharacterController controller;
@@ -35,12 +36,11 @@ public class MinionController : MonoBehaviour
     }
     public virtual  void OrderToMove(Vector3 new_destination)
     {
-        
         if (current_state == STATUS.TETHERED)
         {
             squad.OrderToMove(new_destination);
         }
-        else
+        else if (current_state != STATUS.SOLO)
         {
             current_state = STATUS.MOVING;
             destination = new Vector3(new_destination.x, transform.position.y, new_destination.z);
@@ -48,7 +48,7 @@ public class MinionController : MonoBehaviour
     }
     public void FixedUpdate()
     {
-        if (current_state == STATUS.MOVING)
+        if (current_state == STATUS.MOVING || current_state == STATUS.SOLO)
         {
             current_state = HandleMovement();
         }
@@ -65,7 +65,7 @@ public class MinionController : MonoBehaviour
         {
             return STATUS.IDLE;
         }
-        return STATUS.MOVING;
+        return current_state;
     }
     public Vector3 RotateCalc(Vector3 input_direction, float anchor_rotation)
     {
@@ -78,15 +78,14 @@ public class MinionController : MonoBehaviour
     public void goOnline()
     {
         online = true;
-        mesh_rend.material = online_color;
-        var meshes = GetComponentsInChildren<MeshRenderer>();
-        foreach (var mesh in meshes )
-        {
-            mesh.material = online_color;
-        }
+        ChangeMaterial(online_color);
     }
-    public bool goOffline()
+    public virtual bool goOffline()
     {
+        if(current_state == STATUS.SOLO)
+        {
+            return false;
+        }
         online = false;
         if(current_state == STATUS.TETHERED)
         {
@@ -95,16 +94,19 @@ public class MinionController : MonoBehaviour
                 return false;
             }
         }
-        mesh_rend.material = offline_color;
+        ChangeMaterial(offline_color);
+        return true;
+    }
+    protected void ChangeMaterial (Material new_material)
+    {
+        mesh_rend.material = new_material;
         var meshes = GetComponentsInChildren<MeshRenderer>();
         foreach (var mesh in meshes)
         {
-            mesh.material = offline_color;
+            mesh.material = new_material;
         }
-
-        return true;
     }
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Minion")
         {
@@ -117,5 +119,9 @@ public class MinionController : MonoBehaviour
     protected virtual void AdditionalAwake()
     {
 
+    }
+    public virtual void OrderToSolo(Vector3 new_destination)
+    {
+        OrderToMove(new_destination);
     }
 }

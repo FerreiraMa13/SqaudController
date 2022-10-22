@@ -13,6 +13,21 @@ public class SmartSquadBrain : SquadBrain
         base.Awake();
         agent = GetComponent<NavMeshAgent>();
     }
+    public override bool AddMinion(MinionController new_minion)
+    {
+        if (tethered_minions.Contains(new_minion))
+        {
+            return false;
+        }
+        tethered_minions.Add(new_minion);
+        if (tethered_minions.Count >= 1)
+        {
+            Recenter();
+        }
+        new_minion.current_state = MinionController.STATUS.TETHERED;
+        new_minion.transform.SetParent(transform);
+        return true;
+    }
     public override void OrderToMove(Vector3 new_destination)
     {
         Debug.Log(tethered_minions.Count);

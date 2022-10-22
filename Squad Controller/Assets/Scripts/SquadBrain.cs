@@ -30,7 +30,7 @@ public class SquadBrain : MonoBehaviour
                 destination = new Vector3(new_destination.x, transform.position.y, new_destination.z);
         }
     }
-    public bool AddMinion(MinionController new_minion)
+    public virtual bool AddMinion(MinionController new_minion)
     {
         if(tethered_minions.Contains(new_minion))
         {
