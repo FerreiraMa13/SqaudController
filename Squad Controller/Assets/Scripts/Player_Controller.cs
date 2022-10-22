@@ -6,53 +6,37 @@ using UnityEngine.InputSystem;
 public class Player_Controller : MonoBehaviour
 {
 
-    CharacterController controller;
-    Player_Controller_Actions controls;
-    SquadBrain squad;
-    Camera main_camera;
-    Vector3 coordenates = Vector3.zero;
-    Vector2 movement_inputs = Vector2.zero;
-    Vector2 zoom_inputs = Vector2.zero;
-    Vector2 mouse_pos = Vector2.zero;
-    Vector2 clicked_pos = Vector2.zero;
-    bool clicked = false;
-    /*MinionController minion;*/
-    List<MinionController> controlled_minions = new List<MinionController>();
+    private CharacterController controller;
+    private Player_Controller_Actions controls;
+    private SquadBrain squad;
+    private Camera main_camera;
+    private readonly List<MinionController> controlled_minions = new();
+    private readonly List<Camera> cameras = new();
 
+    private Vector2 movement_inputs = Vector2.zero;
+    private Vector2 zoom_inputs = Vector2.zero;
+    private int camera_id = 0;
+    
     public float speed = 1f;
     public float scroll_speed = 1f;
     public float max_zoom = 8f;
     public float min_zoom = 16f;
-
     public bool inverted = true;
     public bool manual_zoom = false;
-    
-
 
     void Awake()
-    {
-        main_camera = GetComponentInChildren<Camera>();
+    { 
+        foreach(var cam in GetComponentsInChildren<Camera>())
+        {
+            cameras.Add(cam);
+            cam.gameObject.SetActive(false);
+        }
+        main_camera = cameras[0];
+        main_camera.gameObject.SetActive(true);
         controller = GetComponent<CharacterController>();
         squad = GameObject.FindGameObjectWithTag("Squad").GetComponent<SquadBrain>();
-        controls = new Player_Controller_Actions();
-        controls.Player.Click.performed += ctx => GetClickCoordenates(ctx);
-        /*controls.Player.MousePosition.performed += ctx => mouse_pos = ctx.ReadValue<Vector2>();*/
-        controls.Player.Move.performed += ctx => movement_inputs = ctx.ReadValue<Vector2>();
-        controls.Player.Move.canceled += ctx => movement_inputs = Vector2.zero;
-        if(!manual_zoom)
-        {
-            controls.Player.Zoom.performed += ctx => zoom_inputs = ctx.ReadValue<Vector2>();
-            controls.Player.Zoom.canceled += ctx => zoom_inputs = Vector2.zero;
-        }
-        else
-        {
-            controls.Player.ManualZoomPlus.performed += ctx => zoom_inputs.x = 1f;
-            controls.Player.ManualZoomPlus.canceled += ctx => zoom_inputs.x = 0f;
-            controls.Player.ManualZoomMinus.performed += ctx => zoom_inputs.y = -1f;
-            controls.Player.ManualZoomMinus.canceled += ctx => zoom_inputs.y = 0f; 
-        }
+        SetUpControls();
     }
-
     private void FixedUpdate()
     {
         HandleMovement();
@@ -74,13 +58,15 @@ public class Player_Controller : MonoBehaviour
                     /*squad.AddMinion(minion);*/
                     controlled_minions.Add(minion);
                     minion.goOnline();
-                    Debug.Log("Hit Minion");
                 }
                 else
                 {
                     /*squad.RemoveMinion(minion);*/
-                    controlled_minions.Remove(minion);
-                    minion.goOffline();
+                    
+                    if( minion.goOffline() )
+                    {
+                        controlled_minions.Remove(minion);
+                    }
                 }
             }
             else
@@ -166,5 +152,39 @@ public class Player_Controller : MonoBehaviour
             }
         }
         return false;
+    }
+    public void SwapCameras()
+    {
+        int max_id = cameras.Count;
+        camera_id++;
+        Debug.Log(camera_id);
+        Debug.Log(cameras.Count);
+        if(camera_id >= max_id)
+        {
+            camera_id = 0;
+        }
+        main_camera.gameObject.SetActive(false);
+        main_camera = cameras[camera_id];
+        main_camera.gameObject.SetActive(true);
+    }
+    private void SetUpControls()
+    {
+        controls = new Player_Controller_Actions();
+        controls.Player.Click.performed += ctx => GetClickCoordenates(ctx);
+        controls.Player.Move.performed += ctx => movement_inputs = ctx.ReadValue<Vector2>();
+        controls.Player.Move.canceled += ctx => movement_inputs = Vector2.zero;
+        controls.Player.CycleCamera.performed += ctx => SwapCameras();
+        if (!manual_zoom)
+        {
+            controls.Player.Zoom.performed += ctx => zoom_inputs = ctx.ReadValue<Vector2>();
+            controls.Player.Zoom.canceled += ctx => zoom_inputs = Vector2.zero;
+        }
+        else
+        {
+            controls.Player.ManualZoomPlus.performed += ctx => zoom_inputs.x = 1f;
+            controls.Player.ManualZoomPlus.canceled += ctx => zoom_inputs.x = 0f;
+            controls.Player.ManualZoomMinus.performed += ctx => zoom_inputs.y = -1f;
+            controls.Player.ManualZoomMinus.canceled += ctx => zoom_inputs.y = 0f;
+        }
     }
 }

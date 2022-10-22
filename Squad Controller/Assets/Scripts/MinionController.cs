@@ -34,14 +34,15 @@ public class MinionController : MonoBehaviour
     }
     public void OrderToMove(Vector3 new_destination)
     {
-        if (current_state == STATUS.IDLE)
+        
+        if (current_state == STATUS.TETHERED)
+        {
+            squad.OrderToMove(new_destination);
+        }
+        else
         {
             current_state = STATUS.MOVING;
             destination = new Vector3(new_destination.x, transform.position.y, new_destination.z);
-        }
-        else if(current_state == STATUS.TETHERED)
-        {
-            squad.OrderToMove(new_destination);
         }
     }
     public void FixedUpdate()
@@ -84,12 +85,15 @@ public class MinionController : MonoBehaviour
             mesh.material = online_color;
         }
     }
-    public void goOffline()
+    public bool goOffline()
     {
         online = false;
         if(current_state == STATUS.TETHERED)
         {
-            squad.RemoveMinion(this);
+            if (!squad.RemoveMinion(this))
+            {
+                return false;
+            }
         }
         mesh_rend.material = offline_color;
         var meshes = GetComponentsInChildren<MeshRenderer>();
@@ -97,6 +101,8 @@ public class MinionController : MonoBehaviour
         {
             mesh.material = offline_color;
         }
+
+        return true;
     }
     private void OnTriggerEnter(Collider other)
     {

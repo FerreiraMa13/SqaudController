@@ -26,11 +26,8 @@ public class SquadBrain : MonoBehaviour
     {
         if(tethered_minions.Count >0)
         {
-            if (current_state == MinionController.STATUS.IDLE)
-            {
                 current_state = MinionController.STATUS.MOVING;
                 destination = new Vector3(new_destination.x, transform.position.y, new_destination.z);
-            }
         }
     }
     public bool AddMinion(MinionController new_minion)
@@ -50,14 +47,18 @@ public class SquadBrain : MonoBehaviour
     }
     public bool RemoveMinion(MinionController new_minion)
     {
-        if (!tethered_minions.Contains(new_minion))
+        if(current_state == MinionController.STATUS.IDLE)
         {
-            return false;
+            if (!tethered_minions.Contains(new_minion))
+            {
+                return false;
+            }
+            new_minion.transform.parent = null;
+            tethered_minions.Remove(new_minion);
+            new_minion.current_state = MinionController.STATUS.IDLE;
+            return true;
         }
-        new_minion.transform.parent = null;
-        tethered_minions.Remove(new_minion);
-        new_minion.current_state = MinionController.STATUS.IDLE;
-        return true;
+        return false;
     }
     public void Recenter()
     {
