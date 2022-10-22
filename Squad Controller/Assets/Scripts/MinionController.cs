@@ -110,7 +110,6 @@ public class MinionController : MonoBehaviour
         {
             if(other.GetComponent<MinionController>() != null && other.GetComponent<MinionController>() != this)
             {
-                Debug.Log("flag");
                 squad.AddMinion(this);
             }
         }
