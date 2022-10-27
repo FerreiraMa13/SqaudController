@@ -71,6 +71,7 @@ public class SquadBrain : MonoBehaviour
         if(tethered_minions.Count > 0)
         {
             Vector3 mid_point = tethered_minions[0].transform.position;
+            mid_point.y = transform.position.y;
             Vector3 top_left = tethered_minions[0].transform.position;
             Vector3 bot_right = tethered_minions[0].transform.position;
 
@@ -89,7 +90,6 @@ public class SquadBrain : MonoBehaviour
             distance_z *= 0.5f;
             mid_point.x = top_left.x + distance_x;
             mid_point.z = bot_right.z + distance_z;
-            mid_point.y -= 1;
             transform.position = mid_point;
 
             foreach( var child in children)

@@ -30,7 +30,6 @@ public class SmartSquadBrain : SquadBrain
     }
     public override void OrderToMove(Vector3 new_destination)
     {
-        Debug.Log(tethered_minions.Count);
         if (tethered_minions.Count > 0)
         {
             current_state = MinionController.STATUS.MOVING;
@@ -58,5 +57,21 @@ public class SmartSquadBrain : SquadBrain
             return MinionController.STATUS.IDLE;
         }
         return MinionController.STATUS.MOVING;
+    }
+    public void OrderToSolo(Vector3 new_destination)
+    {
+        Debug.Log(tethered_minions.Count);
+        if (tethered_minions.Count > 0)
+        {
+            if(destination != new_destination)
+            {
+                destination = new Vector3(new_destination.x, transform.position.y, new_destination.z);
+                var minion = tethered_minions[0];
+                if(minion.goSolo())
+                {
+                    minion.OrderToSolo(destination);
+                }
+            }
+        }
     }
 }

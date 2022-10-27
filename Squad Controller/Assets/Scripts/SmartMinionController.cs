@@ -28,7 +28,7 @@ public class SmartMinionController : MinionController
     {
         if (current_state == STATUS.TETHERED)
         {
-            squad.OrderToMove(new_destination);
+            squad.OrderToSolo(new_destination);
         }
         else if (current_state != STATUS.SOLO)
         {
@@ -76,13 +76,18 @@ public class SmartMinionController : MinionController
         agent.enabled = true;
         return true;
     }
-    public bool goSolo()
+    public override bool goSolo()
     {
         if (current_state == STATUS.TETHERED)
         {
             if (!squad.RemoveMinion(this))
             {
                 return false;
+            }
+            current_state = STATUS.IDLE;
+            if (!agent.isActiveAndEnabled)
+            {
+                agent.enabled = true;
             }
         }
         ChangeMaterial(solo_color);

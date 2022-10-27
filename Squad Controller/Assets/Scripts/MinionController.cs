@@ -11,7 +11,7 @@ public class MinionController : MonoBehaviour
         TETHERED = 2,
         SOLO = 3
     }
-    protected SquadBrain squad;
+    protected SmartSquadBrain squad;
     private CharacterController controller;
     public float speed = 1f;
     public float error_margin = 0.5f;
@@ -31,7 +31,7 @@ public class MinionController : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         mesh_rend = GetComponent<MeshRenderer>();
-        squad = GameObject.FindGameObjectWithTag("Squad").GetComponent<SquadBrain>();
+        squad = GameObject.FindGameObjectWithTag("Squad").GetComponent<SmartSquadBrain>();
         AdditionalAwake();
     }
     public virtual  void OrderToMove(Vector3 new_destination)
@@ -123,5 +123,9 @@ public class MinionController : MonoBehaviour
     public virtual void OrderToSolo(Vector3 new_destination)
     {
         OrderToMove(new_destination);
+    }
+    public virtual bool goSolo()
+    {
+        return false;
     }
 }

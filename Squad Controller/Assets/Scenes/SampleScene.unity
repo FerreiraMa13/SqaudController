@@ -1245,7 +1245,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.6666667
+  m_VoxelSize: 1
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: cb66f17c2337aa84baadf60145599448, type: 2}
   m_BuildHeightMesh: 0
@@ -4793,6 +4793,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1521524170183389345, guid: 05ceeeef3cbe03245abfa44aaa0ffbcc, type: 3}
+      propertyPath: m_Speed
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2030120063680275012, guid: 05ceeeef3cbe03245abfa44aaa0ffbcc, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -7382,6 +7386,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1521524170183389345, guid: 05ceeeef3cbe03245abfa44aaa0ffbcc, type: 3}
+      propertyPath: m_Speed
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2030120063680275012, guid: 05ceeeef3cbe03245abfa44aaa0ffbcc, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -8099,7 +8107,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: -334000983
   m_Radius: 0.5
-  m_Speed: 5.5
+  m_Speed: 6
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -8495,6 +8503,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1521524170183389345, guid: 05ceeeef3cbe03245abfa44aaa0ffbcc, type: 3}
+      propertyPath: m_Speed
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2030120063680275012, guid: 05ceeeef3cbe03245abfa44aaa0ffbcc, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -9893,6 +9905,7 @@ MonoBehaviour:
   min_zoom: 16
   inverted: 1
   manual_zoom: 1
+  extra_utility: 0
 --- !u!143 &2078898622
 CharacterController:
   m_ObjectHideFlags: 0
@@ -10260,6 +10273,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1521524170183389345, guid: 05ceeeef3cbe03245abfa44aaa0ffbcc, type: 3}
+      propertyPath: m_Speed
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2030120063680275012, guid: 05ceeeef3cbe03245abfa44aaa0ffbcc, type: 3}
       propertyPath: m_RootOrder
       value: 4
