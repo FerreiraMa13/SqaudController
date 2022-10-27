@@ -70,6 +70,7 @@ public class SmartSquadBrain : SquadBrain
                 if(minion.goSolo())
                 {
                     minion.OrderToSolo(destination);
+                    Recenter();
                 }
             }
         }

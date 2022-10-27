@@ -24,19 +24,7 @@ public class SmartMinionController : MinionController
             destination = new_destination;
         }
     }
-    public override void OrderToSolo(Vector3 new_destination)
-    {
-        if (current_state == STATUS.TETHERED)
-        {
-            squad.OrderToSolo(new_destination);
-        }
-        else if (current_state != STATUS.SOLO)
-        {
-            current_state = STATUS.SOLO;
-            agent.SetDestination(new_destination);
-            destination = new_destination;
-        }
-    }
+   
     protected override STATUS HandleMovement()
     {
         float distance_remain = (destination - transform.position).magnitude;
@@ -92,5 +80,18 @@ public class SmartMinionController : MinionController
         }
         ChangeMaterial(solo_color);
         return true;
+    }
+    public override void OrderToSolo(Vector3 new_destination)
+    {
+        if (current_state == STATUS.TETHERED)
+        {
+            squad.OrderToSolo(new_destination);
+        }
+        else if (current_state != STATUS.SOLO)
+        {
+            current_state = STATUS.SOLO;
+            agent.SetDestination(new_destination);
+            destination = new_destination;
+        }
     }
 }
