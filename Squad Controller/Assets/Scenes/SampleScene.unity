@@ -6212,9 +6212,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1123606138}
+  - component: {fileID: 1123606139}
+  - component: {fileID: 1123606140}
   m_Layer: 0
   m_Name: Button
-  m_TagString: Untagged
+  m_TagString: Interactible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6236,6 +6238,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1123606139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123606137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ba5ecfe00a257145bca3c581337f864, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  active: 1
+  required_minions: 1
+  debug: 0
+--- !u!65 &1123606140
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123606137}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.75, y: 1.5, z: 1.75}
+  m_Center: {x: 0, y: 0.756, z: 0}
 --- !u!1 &1162524039
 GameObject:
   m_ObjectHideFlags: 0
@@ -7912,7 +7942,7 @@ GameObject:
   - component: {fileID: 1522285074}
   m_Layer: 0
   m_Name: Button (1)
-  m_TagString: Untagged
+  m_TagString: Interactible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10824,6 +10854,7 @@ GameObject:
   - component: {fileID: 2078898622}
   - component: {fileID: 2078898621}
   - component: {fileID: 2078898624}
+  - component: {fileID: 2078898625}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -10916,6 +10947,20 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &2078898625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2078898620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af82a9ce1ca5eeb4fb4b496df1f13b96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minion_tag: Minion
+  interactible_tag: Interactible
 --- !u!1 &2082450217
 GameObject:
   m_ObjectHideFlags: 0
