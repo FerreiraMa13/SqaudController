@@ -192,6 +192,7 @@ MonoBehaviour:
   offline_color: {fileID: 2100000, guid: d0d37cf50840ae541b35aab29346c806, type: 2}
   solo_color: {fileID: 2100000, guid: d017b39d53f54d042a28ba2034ff82ea, type: 2}
   agent: {fileID: 0}
+  player: {fileID: 0}
 --- !u!195 &1521524170183389345
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -202,7 +203,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: -1372625422
   m_Radius: 0.7
-  m_Speed: 6
+  m_Speed: 8
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
