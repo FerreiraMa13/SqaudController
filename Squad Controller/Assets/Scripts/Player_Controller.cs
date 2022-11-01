@@ -16,7 +16,7 @@ public class Player_Controller : MonoBehaviour
     private CharacterController controller;
     private Player_Controller_Actions controls;
     private SquadBrain squad;
-    private Camera main_camera;
+    [System.NonSerialized] public Camera main_camera;
     private readonly List<SmartMinionController> controlled_minions = new();
     private readonly List<Camera> cameras = new();
     private GameObject objective;

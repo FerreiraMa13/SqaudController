@@ -4885,7 +4885,7 @@ GameObject:
   - component: {fileID: 920764482}
   m_Layer: 0
   m_Name: Obstacle 1
-  m_TagString: Untagged
+  m_TagString: Inter_Objective
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5946,7 +5946,7 @@ GameObject:
   - component: {fileID: 1070068998}
   m_Layer: 0
   m_Name: Obstacle 2
-  m_TagString: Untagged
+  m_TagString: Inter_Objective
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10912,6 +10912,7 @@ GameObject:
   - component: {fileID: 2078898621}
   - component: {fileID: 2078898624}
   - component: {fileID: 2078898625}
+  - component: {fileID: 2078898626}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -11018,6 +11019,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minion_tag: Minion
   interactible_tag: Interactible
+--- !u!114 &2078898626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2078898620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca942fe8c06d7f24f953acb6e5c0d2ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  internal_string: 
+  hit_object: {fileID: 0}
+  recognisable_tags:
+  - Minion
+  - Interactible
+  - Inter_Objective
 --- !u!1 &2082450217
 GameObject:
   m_ObjectHideFlags: 0

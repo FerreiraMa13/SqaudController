@@ -8,6 +8,7 @@ TagManager:
   - Minion
   - Squad
   - Interactible
+  - Inter_Objective
   layers:
   - Default
   - TransparentFX
