@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class SquadBrain : MonoBehaviour
 {
@@ -56,6 +57,14 @@ public class SquadBrain : MonoBehaviour
             new_minion.transform.parent = null;
             tethered_minions.Remove(new_minion);
             new_minion.current_state = MinionController.STATUS.IDLE;
+            if (new_minion.gameObject.GetComponent<NavMeshAgent>())
+            {
+                new_minion.gameObject.GetComponent<NavMeshAgent>().enabled = true;
+            }
+            if(tethered_minions.Count == 1)
+            {
+                RemoveMinion(tethered_minions[0]);
+            }
             return true;
         }
         return false;
@@ -68,7 +77,7 @@ public class SquadBrain : MonoBehaviour
             children.Add(transform.GetChild(i));
         }
         transform.DetachChildren();
-        if(tethered_minions.Count > 0)
+        if(tethered_minions.Count > 1)
         {
             Vector3 mid_point = tethered_minions[0].transform.position;
             mid_point.y = transform.position.y;

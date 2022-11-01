@@ -9,7 +9,8 @@ public class Player_Controller : MonoBehaviour
     {
         NONE = -1,
         MOVE = 1,
-        SOLO = 2
+        SOLO = 2, 
+        OBJECTIVE = 3,
     }
 
     private CharacterController controller;
@@ -18,6 +19,7 @@ public class Player_Controller : MonoBehaviour
     private Camera main_camera;
     private readonly List<SmartMinionController> controlled_minions = new();
     private readonly List<Camera> cameras = new();
+    private GameObject objective;
 
     private Vector2 movement_inputs = Vector2.zero;
     private Vector2 zoom_inputs = Vector2.zero;
@@ -58,6 +60,7 @@ public class Player_Controller : MonoBehaviour
         Ray ray = main_camera.ScreenPointToRay(Mouse.current.position.ReadValue());
         if(Physics.Raycast(ray, out hit) && hit.collider)
         {
+            /*Debug.Log(hit.transform.tag);*/
             if (hit.transform.tag == "Minion")
             {
                 var minion = hit.transform.gameObject.GetComponent<SmartMinionController>();
@@ -75,6 +78,11 @@ public class Player_Controller : MonoBehaviour
                         controlled_minions.Remove(minion);
                     }
                 }
+            }
+            else if (hit.transform.tag == "Interactible")
+            {
+                objective = hit.transform.gameObject;
+                HandleCommands(hit.point, ORDERS.OBJECTIVE);
             }
             else
             {
@@ -112,6 +120,16 @@ public class Player_Controller : MonoBehaviour
                         controlled_minions.RemoveAt(0);
                     }
                 }
+                break;
+            case ORDERS.OBJECTIVE:
+                    if (controlled_minions.Count != 0)
+                    {
+                        if (controlled_minions[0].goSolo())
+                        {
+                            controlled_minions[0].OrderToSolo(position);
+                            controlled_minions.RemoveAt(0);
+                        }
+                    }
                 break;
             default:
                 break;
@@ -217,6 +235,14 @@ public class Player_Controller : MonoBehaviour
             controls.Player.ManualZoomPlus.canceled += ctx => zoom_inputs.x = 0f;
             controls.Player.ManualZoomMinus.performed += ctx => zoom_inputs.y = -1f;
             controls.Player.ManualZoomMinus.canceled += ctx => zoom_inputs.y = 0f;
+        }
+    }
+
+    public void RemoveMinion(SmartMinionController minion)
+    {
+        if(controlled_minions.Contains(minion))
+        {
+            controlled_minions.Remove(minion);
         }
     }
 }

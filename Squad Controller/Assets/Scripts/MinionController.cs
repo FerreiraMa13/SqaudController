@@ -9,7 +9,8 @@ public class MinionController : MonoBehaviour
         IDLE = 0,
         MOVING = 1,
         TETHERED = 2,
-        SOLO = 3
+        SOLO = 3,
+        OBJECTIVE = 4
     }
     protected SmartSquadBrain squad;
     private CharacterController controller;
@@ -123,6 +124,10 @@ public class MinionController : MonoBehaviour
     public virtual void OrderToSolo(Vector3 new_destination)
     {
         OrderToMove(new_destination);
+    }
+    public virtual void OrderToObjective(Vector3 objective_pos)
+    {
+        OrderToMove(objective_pos);
     }
     public virtual bool goSolo()
     {

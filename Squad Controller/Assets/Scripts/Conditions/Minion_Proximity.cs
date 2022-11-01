@@ -42,4 +42,9 @@ public class Minion_Proximity : Condition
             }
         }
     }
+
+    public override int GetRequirements()
+    {
+        return required_minions;
+    }
 }

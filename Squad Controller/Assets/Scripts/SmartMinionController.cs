@@ -7,9 +7,15 @@ public class SmartMinionController : MinionController
 {
     public Material solo_color;
     public NavMeshAgent agent;
+    public Player_Controller player;
     protected override void AdditionalAwake()
     {
         agent = GetComponent<NavMeshAgent>();
+        
+    }
+    private void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Controller>();
     }
     public override void OrderToMove(Vector3 new_destination)
     {
@@ -24,7 +30,6 @@ public class SmartMinionController : MinionController
             destination = new_destination;
         }
     }
-   
     protected override STATUS HandleMovement()
     {
         float distance_remain = (destination - transform.position).magnitude;
@@ -45,8 +50,11 @@ public class SmartMinionController : MinionController
         {
             if (other.GetComponent<MinionController>() != null && other.GetComponent<MinionController>() != this)
             {
-                squad.AddMinion(this);
-                agent.enabled = false;
+                if(current_state != STATUS.SOLO && other.GetComponent<MinionController>().current_state != STATUS.SOLO)
+                {
+                    squad.AddMinion(this);
+                    agent.enabled = false;
+                }
             }
         }
     }
@@ -92,6 +100,20 @@ public class SmartMinionController : MinionController
             current_state = STATUS.SOLO;
             agent.SetDestination(new_destination);
             destination = new_destination;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.layer == 6 /*Tiles*/|| collision.gameObject.tag == "Minion")
+        {
+
+        }
+        else
+        {
+            goOffline();
+            agent.isStopped = true;
+            player.RemoveMinion(this);
         }
     }
 }
