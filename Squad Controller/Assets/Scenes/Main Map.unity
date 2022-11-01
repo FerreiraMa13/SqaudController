@@ -290,9 +290,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1312519957509069872, guid: c9f0b8d74a14f7f43a435960b85ab32f, type: 3}
-      propertyPath: speed
-      value: 15
+    - target: {fileID: 1309291399184424127, guid: c9f0b8d74a14f7f43a435960b85ab32f, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1312519957509069872, guid: c9f0b8d74a14f7f43a435960b85ab32f, type: 3}
       propertyPath: scroll_speed
@@ -345,6 +345,14 @@ PrefabInstance:
     - target: {fileID: 1312519957509069874, guid: c9f0b8d74a14f7f43a435960b85ab32f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1312519957916869176, guid: c9f0b8d74a14f7f43a435960b85ab32f, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1312519958540847353, guid: c9f0b8d74a14f7f43a435960b85ab32f, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c9f0b8d74a14f7f43a435960b85ab32f, type: 3}

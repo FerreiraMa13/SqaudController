@@ -33,14 +33,21 @@ public class Player_Controller : MonoBehaviour
     public bool manual_zoom = false;
     public bool extra_utility = false;
 
+    public float turn_smooth_time = 0.1f;
+    private float turn_smooth_velocity;
+    public float deadzone = 0.1F;
+
     void Awake()
     { 
         foreach(var cam in GetComponentsInChildren<Camera>())
         {
             cameras.Add(cam);
             cam.gameObject.SetActive(false);
+            if(cam.transform.tag == "MainCamera")
+            {
+                main_camera = cam;
+            }
         }
-        main_camera = cameras[0];
         main_camera.gameObject.SetActive(true);
         controller = GetComponent<CharacterController>();
         squad = GameObject.FindGameObjectWithTag("Squad").GetComponent<SquadBrain>();
@@ -49,7 +56,8 @@ public class Player_Controller : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        HandleMovement();
+        /*HandleMovement();*/
+        FreeHandleMovement();
     }
     private void Update()
     {
@@ -237,12 +245,54 @@ public class Player_Controller : MonoBehaviour
             controls.Player.ManualZoomMinus.canceled += ctx => zoom_inputs.y = 0f;
         }
     }
-
     public void RemoveMinion(SmartMinionController minion)
     {
         if(controlled_minions.Contains(minion))
         {
             controlled_minions.Remove(minion);
         }
+    }
+    private void FreeHandleMovement()
+    {
+
+        Vector3 input_direction = new Vector3(movement_inputs.x, 0.0f, movement_inputs.y);
+        Vector3 rotate = RotateCalc(input_direction, main_camera.transform.eulerAngles.y);
+        Vector3 movement = XZMoveCalc(rotate, input_direction);
+
+        controller.Move(movement * Time.deltaTime);
+    }
+    private Vector3 RotateCalc(Vector3 input_direction, float anchor_rotation)
+    {
+
+        input_direction.Normalize();
+        float rotateAngle = Mathf.Atan2(input_direction.x, input_direction.z) * Mathf.Rad2Deg + anchor_rotation;
+        float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, rotateAngle, ref turn_smooth_velocity, turn_smooth_time);
+        transform.rotation = Quaternion.Euler(0.0f, smoothAngle, 0.0f);
+
+        return new Vector3(0.0f, rotateAngle, 0.0f);
+    }
+    private Vector3 XZMoveCalc(Vector3 direction, Vector3 input)
+    {
+
+        Vector3 forward = Quaternion.Euler(direction).normalized * Vector3.forward;
+        Vector3 movement = forward * speed;
+
+        if ((!Compare2Deadzone(movement_inputs.x) && !Compare2Deadzone(movement_inputs.y)))
+        {
+            movement = Vector3.zero;
+        }
+
+        return movement;
+    }
+    private bool Compare2Deadzone(float value)
+    {
+        if (value < deadzone)
+        {
+            if (value > -deadzone)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
