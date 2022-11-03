@@ -24,6 +24,9 @@ public class Player_Controller : MonoBehaviour
     private Vector2 movement_inputs = Vector2.zero;
     private Vector2 zoom_inputs = Vector2.zero;
     private int camera_id = 0;
+
+    private Vector3 anchor;
+    private bool rotate_anchor = false;
     
     public float speed = 1f;
     public float scroll_speed = 1f;
@@ -56,8 +59,8 @@ public class Player_Controller : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        /*HandleMovement();*/
-        FreeHandleMovement();
+        HandleMovement();
+        /*FreeHandleMovement();*/
     }
     private void Update()
     {
@@ -232,6 +235,7 @@ public class Player_Controller : MonoBehaviour
         controls.Player.CycleCamera.performed += ctx => SwapCameras();
         controls.Player.ExtraUtility.performed += ctx => extra_utility = true;
         controls.Player.ExtraUtility.canceled += ctx => extra_utility = false;
+        controls.Player.CameraUtility.performed += ctx => MouseAnchor();
         if (!manual_zoom)
         {
             controls.Player.Zoom.performed += ctx => zoom_inputs = ctx.ReadValue<Vector2>();
@@ -294,5 +298,21 @@ public class Player_Controller : MonoBehaviour
             }
         }
         return true;
+    }
+    private void MouseAnchor()
+    {
+        /*rotate_anchor = true;
+        anchor = Mouse.current.position.ReadValue();*/
+    }
+    public void Activate()
+    {
+        main_camera.enabled = true;
+        controls.Player.Enable();
+    }
+    public void Disable()
+    {
+        main_camera.enabled = false;
+        controls.Player.Disable();
+
     }
 }

@@ -9,6 +9,7 @@ TagManager:
   - Squad
   - Interactible
   - Inter_Objective
+  - Character
   layers:
   - Default
   - TransparentFX

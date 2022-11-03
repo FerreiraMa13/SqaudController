@@ -98,6 +98,15 @@ public partial class @Player_Controller_Actions : IInputActionCollection2, IDisp
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Camera Utility"",
+                    ""type"": ""Button"",
+                    ""id"": ""6eb543f7-c352-49b8-8750-95ed9fd184bb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -318,6 +327,17 @@ public partial class @Player_Controller_Actions : IInputActionCollection2, IDisp
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Extra Utility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""df24f5c7-5781-4477-8e86-83b15d953c33"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Camera Utility"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -913,6 +933,7 @@ public partial class @Player_Controller_Actions : IInputActionCollection2, IDisp
         m_Player_Click = m_Player.FindAction("Click", throwIfNotFound: true);
         m_Player_CycleCamera = m_Player.FindAction("Cycle Camera", throwIfNotFound: true);
         m_Player_ExtraUtility = m_Player.FindAction("Extra Utility", throwIfNotFound: true);
+        m_Player_CameraUtility = m_Player.FindAction("Camera Utility", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -992,6 +1013,7 @@ public partial class @Player_Controller_Actions : IInputActionCollection2, IDisp
     private readonly InputAction m_Player_Click;
     private readonly InputAction m_Player_CycleCamera;
     private readonly InputAction m_Player_ExtraUtility;
+    private readonly InputAction m_Player_CameraUtility;
     public struct PlayerActions
     {
         private @Player_Controller_Actions m_Wrapper;
@@ -1004,6 +1026,7 @@ public partial class @Player_Controller_Actions : IInputActionCollection2, IDisp
         public InputAction @Click => m_Wrapper.m_Player_Click;
         public InputAction @CycleCamera => m_Wrapper.m_Player_CycleCamera;
         public InputAction @ExtraUtility => m_Wrapper.m_Player_ExtraUtility;
+        public InputAction @CameraUtility => m_Wrapper.m_Player_CameraUtility;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1037,6 +1060,9 @@ public partial class @Player_Controller_Actions : IInputActionCollection2, IDisp
                 @ExtraUtility.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExtraUtility;
                 @ExtraUtility.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExtraUtility;
                 @ExtraUtility.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExtraUtility;
+                @CameraUtility.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCameraUtility;
+                @CameraUtility.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCameraUtility;
+                @CameraUtility.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCameraUtility;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1065,6 +1091,9 @@ public partial class @Player_Controller_Actions : IInputActionCollection2, IDisp
                 @ExtraUtility.started += instance.OnExtraUtility;
                 @ExtraUtility.performed += instance.OnExtraUtility;
                 @ExtraUtility.canceled += instance.OnExtraUtility;
+                @CameraUtility.started += instance.OnCameraUtility;
+                @CameraUtility.performed += instance.OnCameraUtility;
+                @CameraUtility.canceled += instance.OnCameraUtility;
             }
         }
     }
@@ -1229,6 +1258,7 @@ public partial class @Player_Controller_Actions : IInputActionCollection2, IDisp
         void OnClick(InputAction.CallbackContext context);
         void OnCycleCamera(InputAction.CallbackContext context);
         void OnExtraUtility(InputAction.CallbackContext context);
+        void OnCameraUtility(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
