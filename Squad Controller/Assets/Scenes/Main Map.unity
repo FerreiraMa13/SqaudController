@@ -350,6 +350,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1312519957509069901, guid: c9f0b8d74a14f7f43a435960b85ab32f, type: 3}
+      propertyPath: m_Actions
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: e6a4662786fc0f84ab235530bdc2db04, type: 3}
+    - target: {fileID: 1312519957509069901, guid: c9f0b8d74a14f7f43a435960b85ab32f, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1312519957509069901, guid: c9f0b8d74a14f7f43a435960b85ab32f, type: 3}
+      propertyPath: m_DefaultActionMap
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 1312519957916869176, guid: c9f0b8d74a14f7f43a435960b85ab32f, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -563,6 +575,7 @@ GameObject:
   - component: {fileID: 241867566}
   - component: {fileID: 241867565}
   - component: {fileID: 241867564}
+  - component: {fileID: 241867570}
   m_Layer: 0
   m_Name: Character
   m_TagString: Character
@@ -583,9 +596,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   char_camera: {fileID: 0}
-  move_speed: 1
+  move_speed: 4
   deadzone: 0.1
-  turn_smooth_time: 0.1
+  turn_smooth_time: 0.3
+  number_jumps: 1
+  jump_force: 10
+  gravity: 9.8
+  jumping: 0
+  landing: 0
 --- !u!143 &241867565
 CharacterController:
   m_ObjectHideFlags: 0
@@ -684,6 +702,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &241867570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241867563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: e6a4662786fc0f84ab235530bdc2db04, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Character
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1001 &272296893
 PrefabInstance:
   m_ObjectHideFlags: 0

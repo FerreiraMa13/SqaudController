@@ -51,11 +51,12 @@ public class Player_Controller : MonoBehaviour
                 main_camera = cam;
             }
         }
-        main_camera.gameObject.SetActive(true);
+        /*main_camera.gameObject.SetActive(true);*/
         controller = GetComponent<CharacterController>();
         squad = GameObject.FindGameObjectWithTag("Squad").GetComponent<SquadBrain>();
 
         SetUpControls();
+        Disable();
     }
     private void FixedUpdate()
     {
@@ -313,6 +314,5 @@ public class Player_Controller : MonoBehaviour
     {
         main_camera.enabled = false;
         controls.Player.Disable();
-
     }
 }
