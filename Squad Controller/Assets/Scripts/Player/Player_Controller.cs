@@ -20,13 +20,14 @@ public class Player_Controller : MonoBehaviour
     private readonly List<SmartMinionController> controlled_minions = new();
     private readonly List<Camera> cameras = new();
     private GameObject objective;
+    public ConsoleP2C console_p2c;
 
     private Vector2 movement_inputs = Vector2.zero;
     private Vector2 zoom_inputs = Vector2.zero;
     private int camera_id = 0;
 
     private Vector3 anchor;
-    private bool rotate_anchor = false;
+    /*private bool rotate_anchor = false;*/
     
     public float speed = 1f;
     public float scroll_speed = 1f;
@@ -307,12 +308,12 @@ public class Player_Controller : MonoBehaviour
     }
     public void Activate()
     {
-        main_camera.enabled = true;
+        main_camera.gameObject.SetActive(true);
         controls.Player.Enable();
     }
     public void Disable()
     {
-        main_camera.enabled = false;
+        main_camera.gameObject.SetActive(false);
         controls.Player.Disable();
     }
 }

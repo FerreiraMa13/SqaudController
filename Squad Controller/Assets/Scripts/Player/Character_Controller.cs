@@ -9,8 +9,9 @@ public class Character_Controller : MonoBehaviour
     private Player_Controller_Actions controls;
     private CharacterController controller;
     private Vector2 movement_inputs = Vector2.zero;
-
     public Camera char_camera;
+    public ConsoleP2C nearest_console;
+
     public float move_speed = 1.0f;
 
     public float deadzone = 0.1f;
@@ -30,7 +31,7 @@ public class Character_Controller : MonoBehaviour
 
     public bool jumping = false;
     public bool landing = false;
-    private bool falling = false;
+
 
     private void Awake()
     {
@@ -44,9 +45,40 @@ public class Character_Controller : MonoBehaviour
         HandleJump();
         HandleMovement();
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Interactible")
+        {
+            if(other.gameObject.GetComponent<ConsoleP2C>() != null)
+            {
+                nearest_console = other.gameObject.GetComponent<ConsoleP2C>();
+            }
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Interactible")
+        {
+            if (other.gameObject.GetComponent<ConsoleP2C>() == nearest_console)
+            {
+                nearest_console = null;
+            }
+        }
+    }
     public void Interact()
     {
-
+        if(nearest_console != null)
+        {
+            nearest_console.Character_interact();
+        }
+    }
+    private Vector2 SanInput(Vector2 input)
+    {
+        if(input.y < 0)
+        {
+            input.y = 0;
+        }
+        return (input);
     }
     private void HandleMovement()
     {
@@ -60,30 +92,6 @@ public class Character_Controller : MonoBehaviour
     }
     private void HandleJump()
     {
-        /*if (controller.isGrounded)
-        {
-            if (jumping && jump_velocity <= -0.5f)
-            {
-                jumping = false;
-                additional_decay = 0.0f;
-                jump_attempts = 0;
-            }
-            else if (falling)
-            {
-                falling = false;
-                additional_decay = 0.0f;
-            }
-            jump_velocity = -gravity * Time.deltaTime;
-        }
-        else
-        {
-            if (!falling && !jumping)
-            {
-                falling = true;
-            }
-            jump_velocity -= (gravity * Time.deltaTime) + additional_decay;
-            additional_decay += (0.2f * move_speed * Time.deltaTime);
-        }*/
         if(controller.isGrounded)
         {
             if(jumping && additional_decay >= decay_multiplier)
@@ -145,7 +153,7 @@ public class Character_Controller : MonoBehaviour
     private void SetUpControls()
     {
         controls = new Player_Controller_Actions();
-        controls.Character.Move.performed += ctx => movement_inputs = ctx.ReadValue<Vector2>();
+        controls.Character.Move.performed += ctx => movement_inputs = SanInput(ctx.ReadValue<Vector2>());
         controls.Character.Move.canceled += ctx => movement_inputs = Vector2.zero;
         controls.Character.Click.performed += ctx => Interact();
         controls.Character.Interact.performed += ctx => Interact();
@@ -157,7 +165,7 @@ public class Character_Controller : MonoBehaviour
     }
     public void Activate()
     {
-        char_camera.enabled = true;
+        char_camera.gameObject.SetActive(true);
         EnableInput();
     }
     public void EnableInput()
@@ -170,7 +178,7 @@ public class Character_Controller : MonoBehaviour
     }
     public void Disable()
     {
-        char_camera.enabled = false;
+        char_camera.gameObject.SetActive(false);
         DisableInput();
     }
     public void DisableInput()
