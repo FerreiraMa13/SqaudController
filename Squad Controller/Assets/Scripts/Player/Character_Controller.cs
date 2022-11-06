@@ -31,7 +31,8 @@ public class Character_Controller : MonoBehaviour
 
     public bool jumping = false;
     public bool landing = false;
-
+    private bool rotate_lock = false;
+    public float backwards_multiplier = 0.5f;
 
     private void Awake()
     {
@@ -76,7 +77,12 @@ public class Character_Controller : MonoBehaviour
     {
         if(input.y < 0)
         {
-            input.y = 0;
+            /*input.y = 0;*/
+            rotate_lock = true;
+        }
+        else
+        {
+            rotate_lock = false;
         }
         return (input);
     }
@@ -88,7 +94,12 @@ public class Character_Controller : MonoBehaviour
 
         movement.y = jump_velocity;
 
-        controller.Move(move_speed * Time.deltaTime * movement);
+        var movement_motion = move_speed * Time.deltaTime * movement * movement_inputs.y;
+        if(rotate_lock)
+        {
+            movement_motion *= backwards_multiplier;
+        }
+        controller.Move(movement_motion) ;
     }
     private void HandleJump()
     {
@@ -123,6 +134,10 @@ public class Character_Controller : MonoBehaviour
     private Vector3 RotateCalc(Vector3 input_direction, float anchor_rotation)
     {
         input_direction.Normalize();
+        if (rotate_lock)
+        {
+            input_direction.z *= -1;
+        }
         float rotateAngle = Mathf.Atan2(input_direction.x, input_direction.z) * Mathf.Rad2Deg + anchor_rotation;
         float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, rotateAngle, ref turn_smooth_velocity, turn_smooth_time);
         transform.rotation = Quaternion.Euler(0.0f, smoothAngle, 0.0f);

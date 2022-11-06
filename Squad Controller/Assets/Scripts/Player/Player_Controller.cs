@@ -177,7 +177,7 @@ public class Player_Controller : MonoBehaviour
     }
     private void OnEnable()
     {
-        controls.Player.Enable();
+        /*controls.Player.Enable();*/
     }
     public void EnableInput()
     {
