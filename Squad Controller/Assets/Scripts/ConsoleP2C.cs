@@ -39,6 +39,7 @@ public class ConsoleP2C : MonoBehaviour
     {
         online = false;
         ChangeMaterial(completed_material);
+        GetComponent<UI_Caster>().valid = false;
     }
     protected void ChangeMaterial(Material new_material)
     {
