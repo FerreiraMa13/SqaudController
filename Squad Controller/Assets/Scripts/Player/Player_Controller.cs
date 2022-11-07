@@ -13,7 +13,7 @@ public class Player_Controller : MonoBehaviour
         OBJECTIVE = 3,
     }
 
-    private CharacterController controller;
+    public CharacterController controller;
     private Player_Controller_Actions controls;
     private SquadBrain squad;
     [System.NonSerialized] public Camera main_camera;

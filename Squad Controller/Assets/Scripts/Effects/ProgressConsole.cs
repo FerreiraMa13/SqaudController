@@ -6,6 +6,7 @@ public class ProgressConsole : MonoBehaviour
 {
     private Condition condition;
     private bool condition_state = false;
+    public int part_id = 0;
 
     public ConsoleP2C console;
 
@@ -21,7 +22,8 @@ public class ProgressConsole : MonoBehaviour
             if (condition.CheckCondition() && !condition_state)
             {
                 condition_state = true;
-                console.Progress();
+                console.Progress(part_id);
+                this.enabled = false;
             }
         }
     }

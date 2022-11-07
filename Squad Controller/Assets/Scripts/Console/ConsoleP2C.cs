@@ -48,20 +48,28 @@ public class ConsoleP2C : MonoBehaviour
     {
         mesh_rend.material = new_material;
     }
-    public void Progress()
+    public void Progress(int id)
     {
-        if(spawnpoints.Count > 0)
+        if(spawnpoints.Count > 0 && id == current_index)
         {
             current_index++;
-            if (current_index > spawnpoints.Count)
+            if (current_index >= spawnpoints.Count)
             {
                 Claw_Interact();
                 GoOffline();
             }
             else
             {
-                player_claw.transform.position = spawnpoints[current_index].transform.position;
+                RepositionPlayer(current_index);
             }
         }
+    }
+    public void RepositionPlayer(int index)
+    {
+        player_claw.Disable();
+        player_claw.controller.enabled = false;
+        player_claw.transform.position = spawnpoints[index].transform.position;
+        player_claw.controller.enabled = true;
+        player_claw.Activate();
     }
 }
