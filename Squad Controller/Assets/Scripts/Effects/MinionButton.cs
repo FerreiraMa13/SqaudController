@@ -12,6 +12,7 @@ public class MinionButton : MonoBehaviour
     CharacterController controller;
     bool past_direction = false;
 
+    public float error_margin = 0.5f;
     public GameObject reactor;
 /*    public float movement_magnitude;
     public Vector3 direction;*/
@@ -34,13 +35,12 @@ public class MinionButton : MonoBehaviour
             goal = initial_position;
         }
         Vector3 new_direction = goal - reactor.transform.position;
-        Vector3 input_direction = new Vector3(new_direction.x, 0.0f, new_direction.y);
-        controller.Move(new_direction.normalized * speed * Time.deltaTime * movement);
-
-        if (reactor.transform.position == goal)
+        if (new_direction.magnitude <= error_margin)
         {
             movement = 0;
         }
+        Vector3 input_direction = new Vector3(new_direction.x, 0.0f, new_direction.y);
+        controller.Move(new_direction.normalized * speed * Time.deltaTime * movement);
     }
     private void FixedUpdate()
     {

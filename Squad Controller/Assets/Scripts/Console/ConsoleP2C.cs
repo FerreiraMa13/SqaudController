@@ -10,6 +10,8 @@ public class ConsoleP2C : MonoBehaviour
     public Material completed_material;
     private bool online = true;
     public MeshRenderer mesh_rend;
+    public List<GameObject> spawnpoints = new();
+    public int current_index = 0;
 
     private void Awake()
     {
@@ -26,6 +28,7 @@ public class ConsoleP2C : MonoBehaviour
     {
         if(online)
         {
+            player_claw.transform.position = spawnpoints[current_index].transform.position;
             player_claw.Activate();
             character.Disable();
         }
@@ -44,5 +47,21 @@ public class ConsoleP2C : MonoBehaviour
     protected void ChangeMaterial(Material new_material)
     {
         mesh_rend.material = new_material;
+    }
+    public void Progress()
+    {
+        if(spawnpoints.Count > 0)
+        {
+            current_index++;
+            if (current_index > spawnpoints.Count)
+            {
+                Claw_Interact();
+                GoOffline();
+            }
+            else
+            {
+                player_claw.transform.position = spawnpoints[current_index].transform.position;
+            }
+        }
     }
 }

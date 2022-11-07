@@ -69,6 +69,7 @@ public class SmartMinionController : MinionController
             }
         }
         ChangeMaterial(offline_color);
+        agent.enabled = false;
         agent.enabled = true;
         return true;
     }
@@ -99,10 +100,9 @@ public class SmartMinionController : MinionController
         {
             current_state = STATUS.SOLO;
             agent.SetDestination(new_destination);
-            destination = new_destination;
+            destination = new (new_destination.x, transform.position.y, new_destination.z);
         }
     }
-
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.layer == 6 /*Tiles*/|| collision.gameObject.tag == "Minion")

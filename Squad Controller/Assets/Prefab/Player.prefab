@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 1312519957509069872}
   - component: {fileID: 1312519957509069901}
   - component: {fileID: 1312519957509069900}
-  - component: {fileID: 1312519957509069903}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -70,6 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1ed4951bf10d504a86e822e9b55ae5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  console_p2c: {fileID: 0}
   speed: 10
   scroll_speed: 1
   max_zoom: 8
@@ -123,24 +123,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minion_tag: Minion
   interactible_tag: Interactible
---- !u!114 &1312519957509069903
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1312519957509069873}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca942fe8c06d7f24f953acb6e5c0d2ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  internal_string: 
-  hit_object: {fileID: 0}
-  recognisable_tags:
-  - Minion
-  - Interactible
-  - Inter_Objective
 --- !u!1 &1312519957916869177
 GameObject:
   m_ObjectHideFlags: 0
