@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ConsoleP2C : MonoBehaviour
 {
-    public string char_tag = "Character";
+    /*public string char_tag = "Character";*/
     public Player_Controller player_claw;
     public Character_Controller character;
     public Material completed_material;
@@ -15,7 +15,7 @@ public class ConsoleP2C : MonoBehaviour
 
     private void Awake()
     {
-        character = GameObject.FindGameObjectWithTag(char_tag).GetComponent<Character_Controller>();
+       /* character = GameObject.FindGameObjectWithTag(char_tag).GetComponent<Character_Controller>();*/
     }
     private void OnValidate()
     {

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Character_Controller : MonoBehaviour
 {
 
-    private Player_Controller player;
+    public Player_Controller player;
     private Player_Controller_Actions controls;
     private CharacterController controller;
     private Vector2 movement_inputs = Vector2.zero;
@@ -34,11 +34,13 @@ public class Character_Controller : MonoBehaviour
     private bool rotate_lock = false;
     public float backwards_multiplier = 0.5f;
 
+    private bool near_the_console = false;
+
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Controller>();
-        char_camera = GetComponentInChildren<Camera>();
+        /*player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Controller>();
+        char_camera = GetComponentInChildren<Camera>();*/
         SetUpControls();
     }
     private void FixedUpdate()
@@ -48,27 +50,26 @@ public class Character_Controller : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Interactible")
+        if(other.gameObject.layer == 8)
         {
-            if(other.gameObject.GetComponent<ConsoleP2C>() != null)
+            near_the_console = true;
+            ConsoleP2C collideConsole = other.gameObject.GetComponent<ConsoleP2C>();
+            if (collideConsole != null && collideConsole != nearest_console)
             {
-                nearest_console = other.gameObject.GetComponent<ConsoleP2C>();
+                nearest_console = collideConsole;
             }
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Interactible")
+        if (other.gameObject.layer == 8)
         {
-            if (other.gameObject.GetComponent<ConsoleP2C>() == nearest_console)
-            {
-                nearest_console = null;
-            }
+            near_the_console = false;
         }
     }
     public void Interact()
     {
-        if(nearest_console != null)
+        if(near_the_console)
         {
             nearest_console.Character_interact();
         }
